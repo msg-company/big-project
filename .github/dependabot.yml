@@ -1,59 +1,116 @@
 version: 2
 updates:
-  # Проверка зависимостей для всего workspace
-  - package-ecosystem: "npm"
+  # GitHub Actions
+  - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: "weekly"
-    versioning-strategy: increase
-    open-pull-requests-limit: 10
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
+      interval: monthly
+    labels:
+      - "github_actions"
+      - "dependencies"
     commit-message:
-      # prefix будет определять тип изменений в conventional commits
-      prefix: "deps"
-      prefix-development: "deps-dev"
-      include: "scope"
-    # Настройки для pnpm workspace
-    groups:
-      dependencies:
-        patterns:
-          - "*"
+      prefix: ci
+    open-pull-requests-limit: 10
 
-  # Проверка зависимостей для frontend
-  - package-ecosystem: "npm"
+  # Корневой package.json
+  - package-ecosystem: npm
+    directory: "/"
+    versioning-strategy: increase
+    schedule:
+      interval: monthly
+    labels:
+      - "npm"
+      - "dependencies"
+    commit-message:
+      prefix: deps
+      prefix-development: deps-dev
+    groups:
+      # Линтеры и форматтеры
+      lint:
+        patterns:
+          - "@typescript-eslint/*"
+          - "eslint"
+          - "typescript-eslint"
+          - "eslint-*"
+          - "@eslint/*"
+          - "stylelint"
+          - "stylelint-*"
+          - "prettier"
+          - "prettier-*"
+      # Тестирование
+      testing:
+        patterns:
+          - "@testing-library/*"
+          - "@types/testing-library*"
+          - "@types/jest"
+          - "jest"
+          - "jest-*"
+          - "vitest"
+          - "@vitest/*"
+      # Next.js
+      next-js:
+        patterns:
+          - "next"
+          - "eslint-config-next"
+          - "@next/eslint-plugin-next"
+          - "next-*"
+          - "@vercel/*"
+      # React
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      # Tailwind
+      tailwind:
+        patterns:
+          - "tailwindcss"
+          - "@tailwindcss/*"
+          - "postcss"
+          - "autoprefixer"
+      # TypeScript
+      typescript:
+        patterns:
+          - "typescript"
+          - "@types/node"
+          - "tsup"
+          - "tsx"
+    ignore:
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
+    open-pull-requests-limit: 10
+
+  # Frontend SSO
+  - package-ecosystem: npm
     directory: "/apps/frontend/sso"
     schedule:
-      interval: "weekly"
+      interval: monthly
+    labels:
+      - "npm"
+      - "frontend"
+      - "dependencies"
+    commit-message:
+      prefix: deps
+      prefix-development: deps-dev
     groups:
       dependencies:
         patterns:
           - "*"
-    commit-message:
-      prefix: "deps"
-      prefix-development: "deps-dev"
-      include: "scope"
 
-  # Проверка зависимостей для backend
-  - package-ecosystem: "npm"
+  # Backend Gateway
+  - package-ecosystem: npm
     directory: "/apps/backend/gateway"
     schedule:
-      interval: "weekly"
+      interval: monthly
+    labels:
+      - "npm"
+      - "backend"
+      - "dependencies"
+    commit-message:
+      prefix: deps
+      prefix-development: deps-dev
     groups:
       dependencies:
         patterns:
           - "*"
-    commit-message:
-      prefix: "deps"
-      prefix-development: "deps-dev"
-      include: "scope"
-
-  # Проверка GitHub Actions
-  - package-ecosystem: "github-actions"
-    directory: "/"
-    schedule:
-      interval: "weekly"
-    commit-message:
-      prefix: "ci"
-      include: "scope"
