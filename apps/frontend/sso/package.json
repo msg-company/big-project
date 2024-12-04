@@ -1,0 +1,36 @@
+{
+  "name": "sso",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "lint:style": "stylelint \"**/*.{css,scss}\"",
+    "lint:style:fix": "stylelint \"**/*.{css,scss}\" --fix",
+    "format": "prettier --check \"**/*.{ts,tsx,md,js,jsx,json,css,scss}\"",
+    "format:fix": "prettier --write \"**/*.{ts,tsx,md,js,jsx,json,css,scss}\"",
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "15.0.3",
+    "react": "19.0.0-rc-66855b96-20241106",
+    "react-dom": "19.0.0-rc-66855b96-20241106"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "workspace:*",
+    "@repo/prettier-config": "workspace:*",
+    "@repo/stylelint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^22.10.1",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "eslint": "^9.16.0",
+    "prettier": "../../packages/prettier-config/next",
+    "stylelint": "^16.11.0",
+    "typescript": "5.7.2"
+  }
+}

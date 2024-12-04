@@ -1,0 +1,21 @@
+{
+  "name": "@repo/prettier-config",
+  "version": "1.0.0",
+  "description": "Shared prettier configurations",
+  "main": "index.js",
+  "exports": {
+    "./nest": "./nest.js",
+    "./next": "./next.js"
+  },
+  "dependencies": {
+    "prettier": "^3.4.1"
+  },
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "prettier-plugin-organize-attributes": "^1.0.0"
+  }
+}
