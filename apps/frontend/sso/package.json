@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
+    "dev": "next dev --turbopack --port 3001",
     "build": "next build",
     "start": "next start",
     "lint": "eslint .",
@@ -13,7 +13,8 @@
     "lint:style:fix": "stylelint \"**/*.{css,scss}\" --fix",
     "format": "prettier --check \"**/*.{ts,tsx,md,js,jsx,json,css,scss}\"",
     "format:fix": "prettier --write \"**/*.{ts,tsx,md,js,jsx,json,css,scss}\"",
-    "check-types": "tsc --noEmit"
+    "check-types": "tsc --noEmit",
+    "lighthouse": "lhci autorun"
   },
   "dependencies": {
     "next": "15.0.3",
@@ -21,6 +22,7 @@
     "react-dom": "19.0.0-rc-66855b96-20241106"
   },
   "devDependencies": {
+    "@lhci/cli": "0.13.0",
     "@repo/eslint-config": "workspace:*",
     "@repo/prettier-config": "workspace:*",
     "@repo/stylelint-config": "workspace:*",

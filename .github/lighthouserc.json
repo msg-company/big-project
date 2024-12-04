@@ -2,8 +2,8 @@
   "ci": {
     "collect": {
       "numberOfRuns": 3,
-      "startServerCommand": "pnpm turbo run start --filter=sso",
-      "url": ["http://localhost:3000/"],
+      "url": ["http://localhost:3001/"],
+      "staticDistDir": "./apps/frontend/sso/.next",
       "settings": {
         "preset": "desktop"
       }
@@ -17,7 +17,10 @@
       }
     },
     "upload": {
-      "target": "temporary-public-storage"
+      "target": "github-app",
+      "githubAppId": "1078009",
+      "githubAppInstallationId": "57976789",
+      "githubToken": "$LHCI_GITHUB_APP_TOKEN"
     }
   }
 }
