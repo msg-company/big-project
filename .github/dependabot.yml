@@ -20,8 +20,6 @@ updates:
       dependencies:
         patterns:
           - "*"
-    # Проверяем все package.json в workspace
-    workspaces: true
 
   # Проверка зависимостей для frontend
   - package-ecosystem: "npm"
