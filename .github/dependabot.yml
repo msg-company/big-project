@@ -25,57 +25,22 @@ updates:
       prefix: deps
       prefix-development: deps-dev
     groups:
-      # Линтеры и форматтеры
-      lint:
+      # Инструменты разработки
+      dev-tools:
         patterns:
-          - "@typescript-eslint/*"
-          - "eslint"
-          - "typescript-eslint"
-          - "eslint-*"
-          - "@eslint/*"
-          - "stylelint"
-          - "stylelint-*"
+          - "turbo"
+          - "husky"
+          - "lint-staged"
           - "prettier"
-          - "prettier-*"
-      # Тестирование
-      testing:
+      # Commitlint
+      commitlint:
         patterns:
-          - "@testing-library/*"
-          - "@types/testing-library*"
-          - "@types/jest"
-          - "jest"
-          - "jest-*"
-          - "vitest"
-          - "@vitest/*"
-      # Next.js
-      next-js:
-        patterns:
-          - "next"
-          - "eslint-config-next"
-          - "@next/eslint-plugin-next"
-          - "next-*"
-          - "@vercel/*"
-      # React
-      react:
-        patterns:
-          - "react"
-          - "react-dom"
-          - "@types/react"
-          - "@types/react-dom"
-      # Tailwind
-      tailwind:
-        patterns:
-          - "tailwindcss"
-          - "@tailwindcss/*"
-          - "postcss"
-          - "autoprefixer"
+          - "@commitlint/*"
       # TypeScript
       typescript:
         patterns:
           - "typescript"
           - "@types/node"
-          - "tsup"
-          - "tsx"
     ignore:
       - dependency-name: "@types/node"
         update-types: ["version-update:semver-major"]
@@ -94,9 +59,29 @@ updates:
       prefix: deps
       prefix-development: deps-dev
     groups:
-      dependencies:
+      # Next.js и React
+      next-react:
         patterns:
-          - "*"
+          - "next"
+          - "react"
+          - "react-dom"
+          - "@types/react"
+          - "@types/react-dom"
+      # Линтеры и форматтеры
+      lint:
+        patterns:
+          - "eslint"
+          - "@typescript-eslint/*"
+          - "stylelint"
+          - "prettier"
+      # TypeScript
+      typescript:
+        patterns:
+          - "typescript"
+          - "@types/node"
+    ignore:
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
 
   # Backend Gateway
   - package-ecosystem: npm
@@ -111,6 +96,31 @@ updates:
       prefix: deps
       prefix-development: deps-dev
     groups:
-      dependencies:
+      # NestJS
+      nestjs:
         patterns:
-          - "*"
+          - "@nestjs/*"
+      # Тестирование
+      testing:
+        patterns:
+          - "jest"
+          - "@jest/*"
+          - "@types/jest"
+          - "ts-jest"
+          - "supertest"
+          - "@types/supertest"
+      # TypeScript и инструменты
+      typescript-tools:
+        patterns:
+          - "typescript"
+          - "@types/node"
+          - "ts-node"
+          - "ts-loader"
+          - "tsconfig-paths"
+      # Линтеры и форматтеры
+      lint:
+        patterns:
+          - "eslint"
+          - "@typescript-eslint/*"
+          - "prettier"
+          - "prettier-plugin-*"
