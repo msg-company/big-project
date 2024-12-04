@@ -1,0 +1,51 @@
+version: 2
+updates:
+  # Проверка зависимостей для всего workspace
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    versioning-strategy: increase
+    open-pull-requests-limit: 10
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    commit-message:
+      prefix: "chore"
+      include: "scope"
+    # Настройки для pnpm workspace
+    groups:
+      dependencies:
+        patterns:
+          - "*"
+    # Проверяем все package.json в workspace
+    workspaces: true
+
+  # Проверка зависимостей для frontend
+  - package-ecosystem: "npm"
+    directory: "/apps/frontend/sso"
+    schedule:
+      interval: "weekly"
+    groups:
+      dependencies:
+        patterns:
+          - "*"
+
+  # Проверка зависимостей для backend
+  - package-ecosystem: "npm"
+    directory: "/apps/backend/gateway"
+    schedule:
+      interval: "weekly"
+    groups:
+      dependencies:
+        patterns:
+          - "*"
+
+  # Проверка GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
