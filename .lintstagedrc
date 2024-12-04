@@ -1,0 +1,23 @@
+{
+  "apps/**/*.{js,ts,tsx}": [
+    "prettier --write",
+    "cd apps/frontend/sso && eslint --fix",
+    "cd apps/backend/gateway && eslint --fix"
+  ],
+  "apps/**/*.{css,scss}": [
+    "prettier --write",
+    "cd apps/frontend/sso && stylelint --fix",
+    "cd apps/backend/gateway && stylelint --fix"
+  ],
+  "packages/**/*.{js,ts,tsx}": [
+    "prettier --write",
+    "eslint --fix"
+  ],
+  "packages/**/*.{css,scss}": [
+    "prettier --write",
+    "stylelint --fix"
+  ],
+  "*.{json,md}": [
+    "prettier --write"
+  ]
+}
