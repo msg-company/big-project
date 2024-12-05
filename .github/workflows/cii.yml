@@ -23,8 +23,11 @@ jobs:
         run: |
           npm install -g @cyclonedx/bom
           
+      - name: Verify cyclonedx-bom installation
+        run: cyclonedx-bom --version
+        
       - name: Generate SBOM
-        run: cyclonedx-bom -o bom.xml
+        run: npx @cyclonedx/bom -o bom.xml
         
       - name: Run security audit
         run: npm audit
