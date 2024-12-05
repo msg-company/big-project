@@ -24,7 +24,7 @@ jobs:
           npm install -g @cyclonedx/bom
           
       - name: Verify cyclonedx-bom installation
-        run: cyclonedx-bom --version
+        run: npx @cyclonedx/bom --version
         
       - name: Generate SBOM
         run: npx @cyclonedx/bom -o bom.xml
