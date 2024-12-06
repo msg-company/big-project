@@ -4,7 +4,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "pnpm next dev --turbopack",
+    "dev": "pnpm next dev --turbopack -p 3001",
     "build": "pnpm next build",
     "start": "next start",
     "lint": "eslint .",
