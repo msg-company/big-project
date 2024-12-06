@@ -13,8 +13,7 @@
     "lint:style:fix": "turbo lint:style:fix",
     "format:fix": "prettier --write \"**/*.{ts,tsx,md,js,jsx,json,css,scss}\"",
     "prepare": "husky",
-    "lighthouse": "lhci autorun",
-    "setup-env": "pnpm build --filter @repo/cli && repo-setup-env"
+    "lighthouse": "lhci autorun"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",

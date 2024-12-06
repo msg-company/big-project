@@ -4,8 +4,8 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "pnpm setup-env && next dev --turbopack",
-    "build": "pnpm setup-env && next build",
+    "dev": "pnpm next dev --turbopack",
+    "build": "pnpm next build",
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
