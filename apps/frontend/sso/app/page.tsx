@@ -8,8 +8,7 @@ type Props = Omit<ImageProps, 'src'> & {
 };
 
 const ThemeImage = (props: Props) => {
-  // намеренная ошибка форматирования
-  const { srcLight, srcDark, ...rest } = props; // намеренные ошибки форматирования
+  const { srcLight, srcDark, ...rest } = props;
 
   return (
     <>
