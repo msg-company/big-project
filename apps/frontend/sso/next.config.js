@@ -6,6 +6,8 @@ const nextConfig = {
 
   output: 'standalone',
 
+  transpilePackages: ['@repo/env-config'],
+
   // Оптимизация изображений
   images: {
     formats: ['image/avif', 'image/webp'],
