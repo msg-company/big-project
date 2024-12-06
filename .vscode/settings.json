@@ -39,5 +39,7 @@
   },
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "spellright.language": ["ru", "en"],
+  "spellright.documentTypes": ["markdown", "latex", "plaintext"]
 }
