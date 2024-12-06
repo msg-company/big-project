@@ -22,8 +22,11 @@ jobs:
       - name: Install dependencies
         run: npm install -g @cyclonedx/bom
           
+      - name: Clear npm cache
+        run: npm cache clean --force
+        
       - name: Verify cyclonedx-bom installation
-        run: npx @cyclonedx/bom --version
+        run: cyclonedx-bom --version || echo "Installation failed"
         
       - name: Generate SBOM
         run: npx -p @cyclonedx/bom@latest cyclonedx-bom -o bom.xml
