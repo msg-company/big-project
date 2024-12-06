@@ -1,25 +1,55 @@
 # Security Policy
 
-## Reporting a Vulnerability
-
-If you discover a security vulnerability within this project, please send an email to [your-email@example.com]. All security vulnerabilities will be promptly addressed.
-
-Please include the following information in your report:
-
-- Type of issue (e.g. buffer overflow, SQL injection, cross-site scripting, etc.)
-- Full paths of source file(s) related to the manifestation of the issue
-- The location of the affected source code (tag/branch/commit or direct URL)
-- Any special configuration required to reproduce the issue
-- Step-by-step instructions to reproduce the issue
-- Proof-of-concept or exploit code (if possible)
-- Impact of the issue, including how an attacker might exploit the issue
-
 ## Supported Versions
 
-| Version | Supported          |
-| ------- | ------------------ |
-| 1.0.x   | :white_check_mark: |
+We release patches for security vulnerabilities. Which versions are eligible for
+receiving such patches depends on the CVSS v3.0 Rating:
 
-## Security Updates
+| CVSS v3.0 | Supported Versions                        |
+| --------- | ---------------------------------------- |
+| 9.0-10.0  | Releases within the previous three months |
+| 4.0-8.9   | Most recent release                      |
 
-We release patches for security vulnerabilities. Please ensure you are running the latest version.
+## Reporting a Vulnerability
+
+Please report security vulnerabilities through our [security advisories](https://github.com/your-org/your-repo/security/advisories/new).
+
+We will acknowledge your report within 48 hours, and send a more detailed response
+within 72 hours indicating the next steps in handling your report.
+
+After the initial reply to your report, we will endeavor to keep you informed of
+the progress towards a fix and full announcement, and may ask for additional
+information or guidance.
+
+## Security Measures
+
+1. **Environment Variables**
+   - All sensitive configuration is managed through environment variables
+   - Environment variables are validated at runtime
+   - Templates do not contain real secrets
+
+2. **Dependencies**
+   - Regular security audits with `npm audit`
+   - Automated dependency updates with Dependabot
+   - Lock files are committed to repository
+
+3. **Code Security**
+   - TypeScript for type safety
+   - ESLint security plugins
+   - Automated testing
+   - Code review requirements
+
+4. **Infrastructure**
+   - HTTPS everywhere
+   - Regular security updates
+   - Access control and authentication
+   - Logging and monitoring
+
+## Best Practices
+
+1. Never commit sensitive information
+2. Keep dependencies up to date
+3. Follow security advisories
+4. Use strong authentication
+5. Implement proper error handling
+6. Regular security reviews
