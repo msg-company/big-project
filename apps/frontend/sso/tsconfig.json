@@ -12,6 +12,7 @@
     "next.config.js",
     "**/*.ts",
     "**/*.tsx",
+    "**/*.mjs",
     ".next/types/**/*.ts",
     "@types/**/*.d.ts"
   ],
