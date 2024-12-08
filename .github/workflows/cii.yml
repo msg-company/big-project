@@ -2,31 +2,31 @@ name: CII Best Practices
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
   schedule:
-    - cron: '0 0 * * 0' # Weekly on Sundays
+    - cron: "0 0 * * 0" # Weekly on Sundays
 
 # Минимальные необходимые разрешения
 permissions:
   contents: read # для checkout и проверки файлов
-  
+
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@b6849436894e144dbce29d7d7fda2ae3bf9d8365 # v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@72476173717e9fa92b08abe87e9c9dc3a42dc0c8 # v4
         with:
-          node-version: '20'
-          
+          node-version: "20"
+
       - name: Install pnpm
         uses: pnpm/action-setup@a3252b78c470c02df07e9d59298aecedc3ccdd6d # v3.0.0
         with:
-          version: '9.14.4'
+          version: "9.14.4"
 
       - name: Get pnpm store directory
         id: pnpm-cache
@@ -43,7 +43,7 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
-        
+
       - name: Install Syft
         run: |
           SYFT_EXPECTED_HASH="709ae9171e3d44e456a111943c341d0bf0fd2176b41af124d019823a70c34a3f"
@@ -61,28 +61,28 @@ jobs:
 
       - name: Generate SBOM with Syft
         run: syft dir:. -o cyclonedx-json > bom.json
-        
-#      - name: Run security audit
-#        run: npm audit
-        
+
+      #      - name: Run security audit
+      #        run: npm audit
+
       - name: Check for CHANGELOG
         run: |
           if [ ! -f CHANGELOG.md ]; then
             echo "CHANGELOG.md file is missing"
             exit 1
           fi
-          
+
       - name: Check for documentation
         run: |
           if [ ! -f README.md ]; then
             echo "README.md file is missing"
             exit 1
           fi
-          
+
       - name: Check for test coverage
         run: |
           npm run test:coverage || echo "No test coverage found"
-          
+
       - name: Check for security policy
         run: |
           if [ ! -f SECURITY.md ]; then

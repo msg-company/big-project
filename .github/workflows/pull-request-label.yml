@@ -34,7 +34,7 @@ jobs:
           egress-policy: audit
 
       - name: Remove GitHub Actions Label
-        uses: actions-ecosystem/action-remove-labels@f5dccab59b9ed79c1a5ddd2ab6d8771449b0250f # v1.3.0
+        uses: actions-ecosystem/action-remove-labels@2ce5d41b4b6aa8503e285553f75ed56d0a40baf6 # v1.3.0
         with:
           labels: github_actions:pull-request
 

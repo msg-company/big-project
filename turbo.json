@@ -4,36 +4,19 @@
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**"]
-    },
-    "lint": {
-      "dependsOn": ["^lint"]
-    },
-    "lint:fix": {
-      "dependsOn": ["^lint:fix"],
-      "cache": false
-    },
-    "lint:style": {
-      "dependsOn": ["^lint:style"]
-    },
-    "lint:style:fix": {
-      "dependsOn": ["^lint:style:fix"],
-      "cache": false
-    },
-    "check-types": {
-      "dependsOn": ["^check-types"]
+      "inputs": ["src/**/*.tsx", "src/**/*.ts", "src/**/*.css", "package.json"],
+      "outputs": ["dist/**"]
     },
     "dev": {
       "cache": false,
       "persistent": true,
       "dependsOn": ["^dev"]
     },
-    "format": {
-      "outputs": ["**/*"]
+    "lint": {
+      "dependsOn": ["^lint"],
+      "outputs": []
     },
-    "format:fix": {
-      "outputs": ["**/*"],
+    "clean": {
       "cache": false
     }
   }
