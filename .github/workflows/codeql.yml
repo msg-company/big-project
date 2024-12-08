@@ -33,16 +33,23 @@ jobs:
             build-mode: none
 
     steps:
+    - name: Harden Runner
+      uses: step-security/harden-runner@v2.10.2
+      with:
+        egress-policy: audit
+
     - name: Checkout repository
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false
 
     - name: Setup Node.js
-      uses: actions/setup-node@1a4442cacd436585916779262731d5b162bc6ec7
+      uses: actions/setup-node@v4
       with:
         node-version: '18'
 
     - name: Install pnpm
-      uses: pnpm/action-setup@v2.4.0
+      uses: pnpm/action-setup@v3
       with:
         version: '9.14.4'
         run_install: false
@@ -53,7 +60,7 @@ jobs:
         echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
     - name: Setup pnpm cache
-      uses: actions/cache@ab5e6d0c87105b4c9c2047343972218f562e4319 # v4.0.1
+      uses: actions/cache@v4
       with:
         path: ${{ env.STORE_PATH }}
         key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
@@ -91,6 +98,6 @@ jobs:
         EOF
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@aa578102511db1f4524ed59b8cc2bae4f6e88195
+      uses: github/codeql-action/analyze@v3
       with:
         category: "/language:${{matrix.language}}"
