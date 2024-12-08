@@ -28,8 +28,15 @@ jobs:
         
       - name: Install Syft
         run: |
+          SYFT_EXPECTED_HASH="709ae9171e3d44e456a111943c341d0bf0fd2176b41af124d019823a70c34a3f"
           curl -sSfL https://raw.githubusercontent.com/anchore/syft/v1.17.0/install.sh -o install.sh
-          echo "709ae9171e3d44e456a111943c341d0bf0fd2176b41af124d019823a70c34a3f install.sh" | shasum -a 256 -c
+          ACTUAL_HASH=$(shasum -a 256 install.sh | cut -d ' ' -f 1)
+          if [ "$SYFT_EXPECTED_HASH" != "$ACTUAL_HASH" ]; then
+            echo "Hash verification failed!"
+            echo "Expected: $SYFT_EXPECTED_HASH"
+            echo "Got: $ACTUAL_HASH"
+            exit 1
+          fi
           chmod +x install.sh
           ./install.sh -b /usr/local/bin v1.17.0
           rm install.sh
