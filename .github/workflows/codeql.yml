@@ -71,7 +71,7 @@ jobs:
       run: pnpm install --frozen-lockfile
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@v3
+      uses: github/codeql-action/init@1a7989f3955e0c69f0e0ccc14aee54a387a0fd31 # v3
       with:
         languages: ${{ matrix.language }}
         config-file: .github/codeql/codeql-config.yml
@@ -97,6 +97,6 @@ jobs:
         EOF
 
     - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@v3
+      uses: github/codeql-action/analyze@86b04fb0e47484f7282357688f21d5d0e32175fe # v3
       with:
         category: "/language:${{matrix.language}}"

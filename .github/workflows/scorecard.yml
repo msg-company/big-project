@@ -37,7 +37,7 @@ jobs:
           egress-policy: audit
 
       - name: Git Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@b6849436894e144dbce29d7d7fda2ae3bf9d8365 # v4
         with:
           persist-credentials: false
 

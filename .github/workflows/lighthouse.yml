@@ -20,13 +20,13 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@b6849436894e144dbce29d7d7fda2ae3bf9d8365 # v4
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@72476173717e9fa92b08abe87e9c9dc3a42dc0c8 # v4
         with:
           node-version-file: ".nvmrc"
 
