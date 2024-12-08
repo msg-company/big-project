@@ -8,11 +8,11 @@ on:
   schedule:
     - cron: '32 19 * * 1'
 
+# Минимальные необходимые разрешения
 permissions:
-  contents: read
-  security-events: write
-  packages: read
-  actions: read
+  contents: read # для checkout
+  security-events: write # только для записи результатов анализа
+  actions: read # для выполнения действий
 
 jobs:
   analyze:
