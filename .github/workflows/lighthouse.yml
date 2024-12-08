@@ -58,7 +58,9 @@ jobs:
       - name: Run Lighthouse CI
         run: |
           # Install @lhci/cli with integrity check
-          npm install -g @lhci/cli@0.13.0 --ignore-scripts
+          echo "sha512-Y/ulyvT3h2j1jeFEoNC9RM5zOTW9s48Np3yC/kpKP6++to4ulMu4mKrmFit5zFHKuH7pC1+bkcYwM1/ul78FfQ==" > lhci-cli.integrity
+          npm install -g @lhci/cli@0.13.0 --integrity "$(cat lhci-cli.integrity)"
+          rm lhci-cli.integrity
           lhci autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
