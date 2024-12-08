@@ -27,9 +27,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        language: ['javascript']
         include:
-        - language: javascript-typescript
-          build-mode: none
+          - language: javascript
+            build-mode: none
 
     steps:
     - name: Checkout repository
@@ -49,11 +50,31 @@ jobs:
       run: pnpm install --frozen-lockfile
 
     - name: Initialize CodeQL
-      uses: github/codeql-action/init@aa578102511db1f4524ed59b8cc2bae4f6e88195
+      uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
-        build-mode: ${{ matrix.build-mode }}
         queries: security-extended,security-and-quality
+        config-file: .github/codeql/codeql-config.yml
+
+    # Создаем конфигурационный файл для более точного анализа
+    - name: Create CodeQL config
+      run: |
+        mkdir -p .github/codeql
+        cat > .github/codeql/codeql-config.yml << 'EOF'
+        name: "Custom CodeQL config"
+        queries:
+          - uses: security-extended
+          - uses: security-and-quality
+        paths-ignore:
+          - '**/node_modules/**'
+          - '**/dist/**'
+          - '**/.next/**'
+          - '**/build/**'
+          - '**/*.test.ts'
+          - '**/*.test.tsx'
+          - '**/*.spec.ts'
+          - '**/*.spec.tsx'
+        EOF
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@aa578102511db1f4524ed59b8cc2bae4f6e88195
