@@ -3,7 +3,7 @@ name: Branch Protection Rules
 on:
   push:
     paths:
-      - '.github/workflows/branch-protection.yml'
+      - ".github/workflows/branch-protection.yml"
     branches:
       - main
   workflow_dispatch:
@@ -24,7 +24,7 @@ jobs:
       - name: Set Branch Protection
         uses: actions/github-script@v7
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.LHCI_GITHUB_APP_TOKEN }} # Используем токен с правами админа
           script: |
             const { owner, repo } = context.repo;
             await github.rest.repos.updateBranchProtection({
