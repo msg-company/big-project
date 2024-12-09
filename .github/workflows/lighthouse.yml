@@ -35,6 +35,7 @@ jobs:
         with:
           version: "9.14.4"
           run_install: false
+          standalone: true
 
       - name: Get pnpm store directory
         shell: bash
