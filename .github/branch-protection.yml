@@ -1,0 +1,48 @@
+protection:
+  # Защита ветки main
+  main:
+    # Требовать проверку пулл-реквестов перед слиянием
+    required_pull_request_reviews:
+      # Требуемое количество одобрений
+      required_approving_review_count: 1
+      # Запретить авторам PR одобрять свои собственные изменения
+      dismiss_stale_reviews: true
+      require_code_owner_reviews: true
+      # Запретить коммиты напрямую в защищенные ветки
+      require_last_push_approval: true
+
+    # Требовать успешного прохождения проверок статуса
+    required_status_checks:
+      # Проверки должны быть актуальными перед слиянием
+      strict: true
+      # Список обязательных проверок
+      contexts:
+        - "lint"
+        - "test"
+        - "build"
+        - "CodeQL"
+        - "Lighthouse CI"
+        - "OpenSSF Scorecard"
+
+    # Требовать подписанные коммиты
+    required_signatures: true
+
+    # Запретить форс-пуш
+    allow_force_pushes: false
+    
+    # Запретить удаление ветки
+    allow_deletions: false
+
+    # Применять правила к администраторам
+    enforce_admins: true
+
+    # Требовать линейную историю
+    required_linear_history: true
+
+    # Ограничить возможность пуша
+    restrictions:
+      apps: []
+      users: []
+      teams:
+        - "maintainers"
+        - "core-team"

@@ -1,0 +1,29 @@
+name: Branch Protection Rules
+
+on:
+  push:
+    paths:
+      - '.github/branch-protection.yml'
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  administration: write
+
+jobs:
+  protection:
+    name: Set Branch Protection
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set Branch Protection
+        uses: SvanBoxel/branch-protection@main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          path: .github/branch-protection.yml
+          repository: ${{ github.repository }}
