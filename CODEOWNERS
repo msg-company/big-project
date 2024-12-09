@@ -1,0 +1,18 @@
+# Глобальные владельцы кода по умолчанию
+* @msg-company/maintainers
+
+# Frontend
+/apps/frontend/ @msg-company/frontend-team
+/apps/frontend/sso/ @msg-company/sso-team
+
+# Backend
+/apps/backend/ @msg-company/backend-team
+/apps/backend/gateway/ @msg-company/gateway-team
+
+# Инфраструктура и конфигурация
+/.github/ @msg-company/devops-team
+/docker/ @msg-company/devops-team
+*.yml @msg-company/devops-team
+
+# Пакеты и общие компоненты
+/packages/ @msg-company/core-team
