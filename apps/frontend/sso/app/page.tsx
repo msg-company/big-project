@@ -37,6 +37,7 @@ export default function Home() {
           </li>
           <li>Save and see your changes instantly.</li>
           <li>Test your changes locally.</li>
+          <li>Run Lighthouse to check performance and accessibility.</li>
         </ol>
 
         <div className={styles.ctas}>
