@@ -3,7 +3,7 @@ name: Branch Protection Rules
 on:
   push:
     paths:
-      - '.github/branch-protection.yml'
+      - '.github/workflows/branch-protection.yml'
     branches:
       - main
   workflow_dispatch:
