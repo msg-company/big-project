@@ -13,11 +13,15 @@
     "lint:style:fix": "turbo lint:style:fix",
     "format:fix": "prettier --write \"**/*.{ts,tsx,md,js,jsx,json,css,scss}\"",
     "prepare": "husky",
-    "lighthouse": "lhci autorun"
+    "lighthouse": "lhci autorun",
+    "fuzz": "turbo run fuzz",
+    "fuzz:ci": "turbo run fuzz:ci"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
     "@commitlint/config-conventional": "^19.6.0",
+    "@jazzer.js/core": "^1.5.0",
+    "@jazzer.js/jest-runner": "^1.5.0",
     "@lhci/cli": "0.13.0",
     "@types/node": "^20.11.30",
     "husky": "^9.1.7",
