@@ -31,11 +31,9 @@ jobs:
           node-version-file: ".nvmrc"
 
       - name: Install pnpm
-        uses: pnpm/action-setup@d882d12c64e032187b2edb46d3a0d003b7a43598
-        with:
-          version: "9.14.4"
-          run_install: false
-          standalone: true
+        run: |
+          npm install -g pnpm@9.14.4
+          pnpm --version
 
       - name: Get pnpm store directory
         shell: bash
