@@ -57,19 +57,7 @@ jobs:
 
       - name: Run Lighthouse CI
         run: |
-          # Определяем версию и хеш целостности как переменные
-          LHCI_VERSION="0.13.0"
-          LHCI_INTEGRITY="sha512-Y/ulyvT3h2j1jeFEoNC9RM5zOTW9s48Np3yC/kpKP6++to4ulMu4mKrmFit5zFHKuH7pC1+bkcYwM1/ul78FfQ=="
-          
-          # Проверяем и устанавливаем @lhci/cli
-          echo "$LHCI_INTEGRITY" > lhci-cli.integrity
-          if ! npm install -g "@lhci/cli@$LHCI_VERSION" --integrity "$(cat lhci-cli.integrity)"; then
-            echo "Ошибка: Установка @lhci/cli не удалась - проверка целостности не пройдена"
-            exit 1
-          fi
-          rm lhci-cli.integrity
-          
-          # Запускаем Lighthouse CI
+          npm install -g @lhci/cli@0.13.0
           lhci autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
