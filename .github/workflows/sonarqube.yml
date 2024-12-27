@@ -32,8 +32,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Generate environment configs
-        run: pnpm @repo/env-config generate
+      - name: Generate Environment Files
+        run: pnpm --filter=env-config generate
 
       - name: Build project
         run: pnpm turbo run build
