@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev --parallel --filter=sso --filter=gateway",
+    "dev": "turbo dev --parallel --filter=sso --filter=gateway --filter=users-service",
     "lint": "turbo lint",
     "lint:style": "turbo lint:style",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
@@ -14,14 +14,19 @@
     "format:fix": "prettier --write \"**/*.{ts,tsx,md,js,jsx,json,css,scss}\"",
     "prepare": "husky",
     "lighthouse": "lhci autorun",
-    "fuzz": "turbo run fuzz",
-    "fuzz:ci": "turbo run fuzz:ci"
+    "docker:clean": "docker compose -f docker/docker-compose.yml down -v",
+    "docker:setup": "docker compose -f docker/docker-compose.yml --profile setup up setup",
+    "docker": "docker compose -f docker/docker-compose.yml up -d --no-recreate --remove-orphans",
+    "docker:down": "docker compose -f docker/docker-compose.yml down",
+    "docker:restart": "docker compose -f docker/docker-compose.yml restart",
+    "docker:logs": "docker compose -f docker/docker-compose.yml logs -f",
+    "docker:ps": "docker compose -f docker/docker-compose.yml ps",
+    "docker:init": "pnpm docker:clean && pnpm docker:setup && pnpm docker",
+    "generate:docker-env": "tsx packages/env-config/src/scripts/generate-docker-env.ts"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
     "@commitlint/config-conventional": "^19.6.0",
-    "@jazzer.js/core": "^1.5.0",
-    "@jazzer.js/jest-runner": "^1.5.0",
     "@lhci/cli": "0.13.0",
     "@types/node": "^20.11.30",
     "husky": "^9.1.7",

@@ -12,8 +12,8 @@ node_modules
 !.yarn/versions
 
 # Environment Variables
-.env
-.env.*
+# .env
+# .env.*
 !.env.example
 
 # Testing

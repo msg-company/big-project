@@ -2,6 +2,22 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "tasks": {
+    "generate:env": {
+      "cache": false,
+      "outputs": ["apps/**/.env"]
+    },
+    "generate:utils": {
+      "cache": false,
+      "outputs": ["packages/env-config/src/utils/**"]
+    },
+    "generate": {
+      "cache": false,
+      "outputs": [
+        "apps/**/.env",
+        "packages/env-config/src/utils/**",
+        "packages/env-config/dist/**"
+      ]
+    },
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["src/**/*.tsx", "src/**/*.ts", "src/**/*.css", "package.json"],
@@ -10,7 +26,7 @@
     "dev": {
       "cache": false,
       "persistent": true,
-      "dependsOn": ["^dev"]
+      "dependsOn": ["generate"]
     },
     "lint": {
       "dependsOn": ["^lint"],
