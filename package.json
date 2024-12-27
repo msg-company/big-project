@@ -22,7 +22,8 @@
     "docker:logs": "docker compose -f docker/docker-compose.yml logs -f",
     "docker:ps": "docker compose -f docker/docker-compose.yml ps",
     "docker:init": "pnpm docker:clean && pnpm docker:setup && pnpm docker",
-    "generate:docker-env": "tsx packages/env-config/src/scripts/generate-docker-env.ts"
+    "generate:docker-env": "tsx packages/env-config/src/scripts/generate-docker-env.ts",
+    "test:coverage": "turbo run test:coverage"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.6.0",
