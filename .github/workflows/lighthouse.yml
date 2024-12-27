@@ -51,6 +51,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      - name: Generate Environment Files
+        run: pnpm --filter=env-config generate
+
       - name: Build frontend
         run: pnpm turbo build --filter=sso
 
