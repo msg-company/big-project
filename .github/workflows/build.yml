@@ -46,6 +46,7 @@ jobs:
             -Dsonar.test.inclusions=**/*.spec.ts,**/*.test.ts
             -Dsonar.sourceEncoding=UTF-8
             -Dsonar.verbose=true
+            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
 
       # Optional: Fail the job when the Quality Gate is red
       - uses: sonarsource/sonarqube-quality-gate-action@v1
