@@ -1,20 +1,22 @@
-name: SonarQube Scan
+name: Build and Analyze
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
+    branches:
+      - main
 
 jobs:
-  sonarqube:
+  build:
     name: Build and analyze
     runs-on: ubuntu-latest
-    
+
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Важно для корректного анализа
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
 
       - name: Install pnpm
         uses: pnpm/action-setup@v3
@@ -24,30 +26,25 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
-          cache: 'pnpm'
+          node-version: "18"
+          cache: "pnpm"
 
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run Turbo build
-        run: npx turbo run build
+      - name: Generate environment configs
+        run: pnpm @repo/env-config generate
 
-      # Удалил test, так как тестов нет
+      - name: Build project
+        run: pnpm turbo run build
 
-      # Генерация coverage отчетов
-      - name: Generate coverage
-        run: npx turbo run test:coverage
-
-      - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@v4
+      - uses: sonarsource/sonarqube-scan-action@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
 
       # Опционально - проверка Quality Gate
-      - name: SonarQube Quality Gate check
-        uses: sonarsource/sonarqube-quality-gate-action@v1
+      - uses: sonarsource/sonarqube-quality-gate-action@v1
         timeout-minutes: 5
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
