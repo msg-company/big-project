@@ -1,0 +1,12 @@
+http:
+  services:
+    frontend:
+      loadBalancer:
+        servers:
+          - url: "http://host.docker.internal:3001"
+  routers:
+    frontend:
+      rule: "Host(`auth.localhost`)"
+      service: frontend
+      entryPoints:
+        - web
