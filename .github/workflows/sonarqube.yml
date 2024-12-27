@@ -30,8 +30,10 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Run Turbo build and test
-        run: npx turbo run build test
+      - name: Run Turbo build
+        run: npx turbo run build
+
+      # Удалил test, так как тестов нет
 
       # Генерация coverage отчетов
       - name: Generate coverage
