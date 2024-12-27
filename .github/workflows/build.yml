@@ -4,52 +4,23 @@ on:
   push:
     branches:
       - main
-  pull_request:
-    branches:
-      - main
 
 jobs:
   build:
     name: Build and analyze
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: latest
-
-      - name: Install dependencies
-        run: pnpm install
-
-      - name: Run SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@v4
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - uses: sonarsource/sonarqube-scan-action@v4
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
-        with:
-          projectBaseDir: .
-          args: >
-            -Dsonar.projectKey=msg-company_big-project
-            -Dsonar.sources=apps,packages
-            -Dsonar.exclusions=**/*.spec.ts,**/*.test.ts,**/*.d.ts,**/node_modules/**
-            -Dsonar.tests=apps,packages
-            -Dsonar.test.inclusions=**/*.spec.ts,**/*.test.ts
-            -Dsonar.sourceEncoding=UTF-8
-            -Dsonar.verbose=true
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
-
-      # Optional: Fail the job when the Quality Gate is red
-      - uses: sonarsource/sonarqube-quality-gate-action@v1
-        timeout-minutes: 5
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      # If you wish to fail your job when the Quality Gate is red, uncomment the
+      # following lines. This would typically be used to fail a deployment.
+      # - uses: sonarsource/sonarqube-quality-gate-action@v1
+      #   timeout-minutes: 5
+      #   env:
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
