@@ -1,32 +1,33 @@
+import { getNextSsoEnv } from '@repo/env-config';
+
 import Image, { type ImageProps } from 'next/image';
 
 import styles from './page.module.css';
 
 type Props = Omit<ImageProps, 'src'> & {
-  srcLight: string;
-  srcDark: string;
+  src: {
+    light: string;
+    dark: string;
+  };
 };
 
-const ThemeImage = (props: Props) => {
-  const { srcLight, srcDark, ...rest } = props;
-
-  return (
-    <>
-      <Image {...rest} src={srcLight} className="imgLight" />
-      <Image {...rest} src={srcDark} className="imgDark" />
-    </>
-  );
+const Logo = ({ src, ...props }: Props) => {
+  return <Image {...props} src={src.light} />;
 };
 
 export default function Home() {
+  const env = getNextSsoEnv();
+  console.log(env.PORT); // Типизировано как number для SSO приложения
   return (
     <div className={styles.page}>
       <header>
         <nav aria-label="Main navigation">
-          <ThemeImage
+          <Logo
             className={styles.logo}
-            srcLight="turborepo-dark.svg"
-            srcDark="turborepo-light.svg"
+            src={{
+              light: 'turborepo-dark.svg',
+              dark: 'turborepo-light.svg',
+            }}
             alt="Turborepo logo"
             width={180}
             height={38}

@@ -4,9 +4,9 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "pnpm next dev --turbopack -p 3001",
-    "build": "pnpm next build",
-    "start": "next start",
+    "dev": "dotenv -e .env.local -- pnpm next dev --turbopack",
+    "build": "next build",
+    "start": "dotenv -e .env.production -- pnpm next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "lint:style": "stylelint \"**/*.{css,scss}\"",
@@ -17,6 +17,7 @@
     "lighthouse": "lhci autorun"
   },
   "dependencies": {
+    "@repo/env-config": "workspace:*",
     "next": "15.0.3",
     "react": "19.0.0-rc-66855b96-20241106",
     "react-dom": "19.0.0-rc-66855b96-20241106",
@@ -34,7 +35,8 @@
     "@types/react-dom": "18.3.1",
     "critters": "^0.0.25",
     "css-loader": "^6.10.0",
-    "eslint": "^9.16.0",
+    "dotenv-cli": "^7.4.4",
+    "eslint": "^9.17.0",
     "prettier": "link:../../packages/prettier-config/next",
     "style-loader": "^3.3.4",
     "stylelint": "^16.11.0",
