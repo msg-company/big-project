@@ -39,7 +39,7 @@
     "eslint": "^9.17.0",
     "prettier": "link:../../packages/prettier-config/next",
     "style-loader": "^3.3.4",
-    "stylelint": "^16.11.0",
+    "stylelint": "^16.12.0",
     "typescript": "5.7.2"
   }
 }
