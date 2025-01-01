@@ -29,7 +29,7 @@
     "@commitlint/cli": "^19.6.0",
     "@commitlint/config-conventional": "^19.6.0",
     "@lhci/cli": "0.13.0",
-    "@types/node": "^20.11.30",
+    "@types/node": "^20.17.11",
     "husky": "^9.1.7",
     "jsonwebtoken": "^9.0.2",
     "lighthouse": "^12.2.2",
