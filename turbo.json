@@ -2,14 +2,6 @@
   "$schema": "https://turbo.build/schema.json",
   "ui": "tui",
   "tasks": {
-    "generate:env": {
-      "cache": false,
-      "outputs": ["apps/**/.env"]
-    },
-    "generate:utils": {
-      "cache": false,
-      "outputs": ["packages/env-config/src/utils/**"]
-    },
     "generate": {
       "cache": false,
       "outputs": [
@@ -28,20 +20,15 @@
       "persistent": true,
       "dependsOn": ["generate"]
     },
+    "gateway:dev": {
+      "dependsOn": ["users-service:dev"]
+    },
     "lint": {
       "dependsOn": ["^lint"],
       "outputs": []
     },
     "clean": {
       "cache": false
-    },
-    "fuzz": {
-      "dependsOn": ["^build"],
-      "outputs": ["coverage/**"]
-    },
-    "fuzz:ci": {
-      "dependsOn": ["^build"],
-      "outputs": ["coverage/**"]
     }
   }
 }

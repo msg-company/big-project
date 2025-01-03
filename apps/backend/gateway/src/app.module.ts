@@ -7,8 +7,7 @@ import { ConfigModule } from "@nestjs/config";
 import { GraphQLModule } from "@nestjs/graphql";
 import { NestGatewayEnvService } from "@repo/env-config";
 import * as path from "path";
-import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
+import { DiscoveryModule } from "@repo/service-discovery";
 
 export class GraphQLDataSource extends RemoteGraphQLDataSource {
   didReceiveResponse({ response, context }): typeof response {
@@ -34,7 +33,15 @@ export class GraphQLDataSource extends RemoteGraphQLDataSource {
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [path.resolve(__dirname, `../.env.${process.env.NODE_ENV || "local"}`)],
+      envFilePath: [path.resolve(process.cwd(), `.env.${process.env.NODE_ENV || "development"}`)],
+    }),
+    DiscoveryModule.forRoot({
+      serviceId: "gateway",
+      consulHost: "localhost",
+      consulPort: 8500,
+      healthCheckServices: ["memory", "nestjs", "disk"],
+      healthEndpoint: "http://localhost:4200/health",
+      dependencies: ["users-service", "auth-service"],
     }),
     GraphQLModule.forRoot<ApolloGatewayDriverConfig>({
       driver: ApolloGatewayDriver,
@@ -59,13 +66,16 @@ export class GraphQLDataSource extends RemoteGraphQLDataSource {
       },
       gateway: {
         supergraphSdl: new IntrospectAndCompose({
-          subgraphs: [{ name: "users", url: "http://localhost:4206/graphql" }],
+          subgraphs: [
+            { name: "auth-service", url: "http://localhost:4202/graphql" },
+            { name: "users-service", url: "http://localhost:4206/graphql" },
+          ],
         }),
         buildService: ({ url }) => new GraphQLDataSource({ url }),
       },
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService, NestGatewayEnvService],
+  controllers: [],
+  providers: [NestGatewayEnvService],
 })
 export class AppModule {}

@@ -1,10 +1,11 @@
 {
   "name": "my-turborepo",
   "private": true,
+  "type": "module",
   "license": "MIT",
   "scripts": {
     "build": "turbo build",
-    "dev": "turbo dev --parallel --filter=sso --filter=gateway --filter=users-service",
+    "dev": "turbo dev --parallel --filter=sso --filter=gateway --filter=users-service --filter=auth-service --filter=audit-logging-service",
     "lint": "turbo lint",
     "lint:style": "turbo lint:style",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
@@ -21,24 +22,22 @@
     "docker:restart": "docker compose -f docker/docker-compose.yml restart",
     "docker:logs": "docker compose -f docker/docker-compose.yml logs -f",
     "docker:ps": "docker compose -f docker/docker-compose.yml ps",
-    "docker:init": "pnpm docker:clean && pnpm docker:setup && pnpm docker",
-    "generate:docker-env": "tsx packages/env-config/src/scripts/generate-docker-env.ts",
-    "test:coverage": "turbo run test:coverage"
+    "docker:init": "pnpm docker:clean && pnpm docker:setup && pnpm docker"
   },
   "devDependencies": {
-    "@commitlint/cli": "^19.6.0",
+    "@commitlint/cli": "^19.6.1",
     "@commitlint/config-conventional": "^19.6.0",
-    "@lhci/cli": "0.13.0",
-    "@types/node": "^20.11.30",
+    "@lhci/cli": "0.14.0",
+    "@types/node": "^22.10.2",
     "husky": "^9.1.7",
     "jsonwebtoken": "^9.0.2",
-    "lighthouse": "^12.2.2",
-    "lint-staged": "^15.2.10",
+    "lighthouse": "^12.3.0",
+    "lint-staged": "^15.3.0",
     "prettier": "^3.4.2",
     "turbo": "^2.3.3",
     "typescript": "5.7.2"
   },
-  "packageManager": "pnpm@9.14.4",
+  "packageManager": "pnpm@9.15.2",
   "engines": {
     "node": ">=18"
   }

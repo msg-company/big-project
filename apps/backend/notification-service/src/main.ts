@@ -1,3 +1,11 @@
+import { initializeTracing } from "@repo/telemetry";
+
+initializeTracing({
+  serviceName: "notification-service",
+  environment: process.env.NODE_ENV,
+  jaegerEndpoint: process.env.JAEGER_ENDPOINT,
+});
+
 import { NestFactory } from "@nestjs/core";
 import { NestNotificationServiceEnvService } from "@repo/env-config";
 import { AppModule } from "./app.module";
