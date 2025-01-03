@@ -1,3 +1,6 @@
+import { AppModule } from "./app.module";
+import { NestFactory } from "@nestjs/core";
+import { NestNotificationServiceEnvService } from "@repo/env-config";
 import { initializeTracing } from "@repo/telemetry";
 
 initializeTracing({
@@ -5,10 +8,6 @@ initializeTracing({
   environment: process.env.NODE_ENV,
   jaegerEndpoint: process.env.JAEGER_ENDPOINT,
 });
-
-import { NestFactory } from "@nestjs/core";
-import { NestNotificationServiceEnvService } from "@repo/env-config";
-import { AppModule } from "./app.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

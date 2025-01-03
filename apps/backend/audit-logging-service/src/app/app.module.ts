@@ -3,11 +3,11 @@ import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
 import { ClientsModule, Transport } from "@nestjs/microservices";
 import { NestAuditLoggingServiceEnvService } from "@repo/env-config";
+import { DiscoveryModule } from "@repo/service-discovery";
+import { TelemetryModule } from "@repo/service-telemetry";
 import * as path from "path";
 import { LogsController } from "./controllers/logs.controller";
 import { ElkService } from "./services/elk.service";
-import { TestController } from "./controllers/test.controller";
-import { DiscoveryModule } from "@repo/service-discovery";
 
 const ENV_SERVICE_PROVIDER = {
   provide: NestAuditLoggingServiceEnvService,
@@ -20,6 +20,11 @@ const ENV_SERVICE_PROVIDER = {
       isGlobal: true,
       envFilePath: [path.resolve(process.cwd(), `.env.${process.env.NODE_ENV || "development"}`)],
     }),
+    TelemetryModule.forRoot({
+      serviceName: "audit-logging-service",
+      environment: process.env.NODE_ENV || "development",
+      jaegerEndpoint: "http://localhost:4318/v1/traces",
+    }),
     ClientsModule.registerAsync([
       {
         name: "KAFKA_SERVICE",
@@ -29,9 +34,27 @@ const ENV_SERVICE_PROVIDER = {
             client: {
               clientId: envService.get("KAFKA_CLIENT_ID"),
               brokers: [`localhost:${envService.get("KAFKA_PORT")}`],
+              retry: {
+                initialRetryTime: 100,
+                retries: 5,
+              },
             },
             consumer: {
-              groupId: envService.get("KAFKA_GROUP_ID"),
+              groupId: "audit-logging-consumer",
+              sessionTimeout: 30000,
+              heartbeatInterval: 3000,
+              maxBytesPerPartition: 1048576,
+              retry: {
+                initialRetryTime: 100,
+                retries: 5,
+              },
+            },
+            producer: {
+              allowAutoTopicCreation: true,
+              retry: {
+                initialRetryTime: 100,
+                retries: 5,
+              },
             },
           },
         }),
@@ -56,7 +79,7 @@ const ENV_SERVICE_PROVIDER = {
       extraProviders: [ENV_SERVICE_PROVIDER],
     }),
   ],
-  controllers: [LogsController, TestController],
+  controllers: [LogsController],
   providers: [ENV_SERVICE_PROVIDER, ElkService],
 })
 export class AppModule {}

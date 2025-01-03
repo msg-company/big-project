@@ -1,10 +1,10 @@
-import { FlatCompat } from '@eslint/eslintrc';
-import js from '@eslint/js';
-import typescriptEslintPlugin from '@typescript-eslint/eslint-plugin';
-import tsParser from '@typescript-eslint/parser';
-import globals from 'globals';
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { FlatCompat } from "@eslint/eslintrc";
+import js from "@eslint/js";
+import typescriptEslintPlugin from "@typescript-eslint/eslint-plugin";
+import tsParser from "@typescript-eslint/parser";
+import globals from "globals";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,12 +16,15 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: ['**/eslint.config.mjs'],
+    ignores: ["**/eslint.config.mjs"],
   },
-  ...compat.extends('plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'),
+  ...compat.extends(
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+  ),
   {
     plugins: {
-      '@typescript-eslint': typescriptEslintPlugin,
+      "@typescript-eslint": typescriptEslintPlugin,
     },
     languageOptions: {
       globals: {
@@ -30,16 +33,19 @@ export default [
       },
       parser: tsParser,
       ecmaVersion: 2022,
-      sourceType: 'module',
+      sourceType: "module",
       parserOptions: {
-        project: './tsconfig.json',
+        project: "./tsconfig.json",
+        ecmaFeatures: {
+          legacyDecorators: true,
+        },
       },
     },
     rules: {
-      '@typescript-eslint/interface-name-prefix': 'off',
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/explicit-module-boundary-types': 'off',
-      '@typescript-eslint/no-explicit-any': 'off',
+      "@typescript-eslint/interface-name-prefix": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/explicit-module-boundary-types": "off",
+      "@typescript-eslint/no-explicit-any": "off",
     },
   },
 ];

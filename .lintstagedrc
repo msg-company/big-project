@@ -9,15 +9,7 @@
     "cd apps/frontend/sso && stylelint --fix",
     "cd apps/backend/gateway && stylelint --fix"
   ],
-  "packages/**/*.{js,ts,tsx}": [
-    "prettier --write",
-    "eslint --fix"
-  ],
-  "packages/**/*.{css,scss}": [
-    "prettier --write",
-    "stylelint --fix"
-  ],
-  "*.json": [
-    "prettier --write"
-  ]
+  "packages/**/*.{js,ts,tsx}": ["prettier --write", "eslint --fix"],
+  "packages/**/*.{css,scss}": ["prettier --write", "stylelint --fix"],
+  "*.json": ["prettier --write"]
 }

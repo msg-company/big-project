@@ -100,10 +100,10 @@ export class HealthService {
                       message: "NestJS application is running",
                     },
                   };
-                } catch (_) {
+                } catch (error) {
                   const status = "down";
                   if (this.previousStatuses["nestjs"] !== status) {
-                    this.logger.error("❌ NestJS is unavailable");
+                    this.logger.error(`❌ NestJS is unavailable ${error}`);
                     changedServices.push("nestjs");
                     this.previousStatuses["nestjs"] = status;
                   }

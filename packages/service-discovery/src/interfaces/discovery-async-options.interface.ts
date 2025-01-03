@@ -1,5 +1,5 @@
-import { Provider } from "@nestjs/common";
 import { IDiscoveryModuleOptions } from "./discovery-options.interface";
+import { Provider } from "@nestjs/common";
 
 export interface IDiscoveryModuleAsyncOptions {
   useFactory: (...args: any[]) => Promise<IDiscoveryModuleOptions> | IDiscoveryModuleOptions;

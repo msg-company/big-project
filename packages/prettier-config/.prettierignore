@@ -1,1 +1,11 @@
-*.stories.tsx
+# Ignore configuration files
+*.json
+*.js
+*.ts
+*.tsbuildinfo
+
+# Ignore build output
+dist/
+.next/
+out/
+node_modules/

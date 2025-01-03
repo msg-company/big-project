@@ -4,7 +4,7 @@ Elastic Enterprise Search is a suite of products for search applications backed 
 
 ## Requirements
 
-* 2 GB of free RAM, on top of the resources required by the other stack components and extensions.
+- 2 GB of free RAM, on top of the resources required by the other stack components and extensions.
 
 The Enterprise Search web application is served on the TCP port `3002`.
 
@@ -28,7 +28,8 @@ secret_management.encryption_keys:
 ```
 
 ```yaml
-secret_management.encryption_keys: [my_first_encryption_key, my_second_encryption_key, ...]
+secret_management.encryption_keys:
+  [my_first_encryption_key, my_second_encryption_key, ...]
 ```
 
 > [!NOTE]
@@ -78,8 +79,8 @@ Enterprise Search home page.
 
 Enterprise Search is configured on first boot with the following default credentials:
 
-* user: *enterprise_search*
-* password: *changeme*
+- user: _enterprise_search_
+- password: _changeme_
 
 ## Security
 
@@ -91,9 +92,8 @@ boot**:
 
 ```yaml
 enterprise-search:
-
   environment:
-    ENT_SEARCH_DEFAULT_PASSWORD: {{some strong password}}
+    ENT_SEARCH_DEFAULT_PASSWORD: { { some strong password } }
 ```
 
 > [!WARNING]
@@ -111,10 +111,9 @@ You can also specify the options you want to override by setting environment var
 
 ```yaml
 enterprise-search:
-
   environment:
     ent_search.auth.source: standard
-    worker.threads: '6'
+    worker.threads: "6"
 ```
 
 Any change to the Enterprise Search configuration requires a restart of the Enterprise Search container:
@@ -131,14 +130,12 @@ Docker container: [Running Enterprise Search Using Docker][enterprisesearch-dock
 [Enterprise Search documentation][enterprisesearch-docs]
 
 [config-enterprisesearch]: ./config/enterprise-search.yml
-
 [enterprisesearch-encryption]: https://www.elastic.co/guide/en/enterprise-search/current/encryption-keys.html
 [enterprisesearch-security]: https://www.elastic.co/guide/en/workplace-search/current/workplace-search-security.html
 [enterprisesearch-config]: https://www.elastic.co/guide/en/enterprise-search/current/configuration.html
 [enterprisesearch-docker]: https://www.elastic.co/guide/en/enterprise-search/current/docker.html
 [enterprisesearch-docs]: https://www.elastic.co/guide/en/enterprise-search/current/index.html
 [enterprisesearch-kb]: https://www.elastic.co/guide/en/kibana/current/enterprise-search-settings-kb.html
-
 [es-security]: https://www.elastic.co/guide/en/elasticsearch/reference/current/security-settings.html#api-key-service-settings
 [config-es]: ../../elasticsearch/config/elasticsearch.yml
 [config-kbn]: ../../kibana/config/kibana.yml

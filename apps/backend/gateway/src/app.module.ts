@@ -8,6 +8,7 @@ import { GraphQLModule } from "@nestjs/graphql";
 import { NestGatewayEnvService } from "@repo/env-config";
 import * as path from "path";
 import { DiscoveryModule } from "@repo/service-discovery";
+import { TelemetryModule } from "@repo/service-telemetry";
 
 export class GraphQLDataSource extends RemoteGraphQLDataSource {
   didReceiveResponse({ response, context }): typeof response {
@@ -34,6 +35,11 @@ export class GraphQLDataSource extends RemoteGraphQLDataSource {
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: [path.resolve(process.cwd(), `.env.${process.env.NODE_ENV || "development"}`)],
+    }),
+    TelemetryModule.forRoot({
+      serviceName: "gateway-service",
+      environment: process.env.NODE_ENV || "development",
+      jaegerEndpoint: "http://localhost:4318/v1/traces",
     }),
     DiscoveryModule.forRoot({
       serviceId: "gateway",

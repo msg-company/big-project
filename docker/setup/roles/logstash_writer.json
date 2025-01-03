@@ -1,9 +1,5 @@
 {
-  "cluster": [
-    "manage_index_templates",
-    "monitor",
-    "manage_ilm"
-  ],
+  "cluster": ["manage_index_templates", "monitor", "manage_ilm"],
   "indices": [
     {
       "names": [
@@ -12,23 +8,11 @@
         "ecs-logstash-*",
         "service-logs-*"
       ],
-      "privileges": [
-        "write",
-        "create",
-        "create_index",
-        "manage",
-        "manage_ilm"
-      ]
+      "privileges": ["write", "create", "create_index", "manage", "manage_ilm"]
     },
     {
-      "names": [
-        "logstash",
-        "ecs-logstash"
-      ],
-      "privileges": [
-        "write",
-        "manage"
-      ]
+      "names": ["logstash", "ecs-logstash"],
+      "privileges": ["write", "manage"]
     }
   ]
 }

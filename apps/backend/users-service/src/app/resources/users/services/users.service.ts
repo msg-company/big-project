@@ -47,6 +47,7 @@ export class UsersService {
 
       return user;
     } catch (error) {
+      console.error("Failed to create user", error);
       throw new InternalServerErrorException("Error creating user");
     }
   }

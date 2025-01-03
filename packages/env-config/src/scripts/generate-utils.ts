@@ -1,11 +1,9 @@
 import { mkdirSync, writeFileSync } from 'fs';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { dirname, resolve } from 'path';
 
 import { envConfig } from '../env-config';
 
-// Получаем эквивалент __dirname для ES-модулей
-const __filename = fileURLToPath(import.meta.url);
+const __filename = resolve('generate-utils.ts');
 const __dirname = dirname(__filename);
 
 // Типы для конфигурации
@@ -241,6 +239,32 @@ ${switchCases}
   return `${Array.from(imports).join(';\n')};\n\n${interfaces.join('\n\n')}\n\n${schemas.join('\n\n')}\n\n${services.join('\n\n')}`;
 }
 
+function generateIndex(platforms: Record<string, PlatformConfig>): string {
+  const nextPlatforms = Object.entries(platforms).filter(
+    ([_, config]) => config.type === 'frontend',
+  );
+  const nestPlatforms = Object.entries(platforms).filter(
+    ([_, config]) => config.type === 'backend',
+  );
+
+  const nextExports = nextPlatforms
+    .map(([name]) => `export { getNext${toPascalCase(name)}Env } from './next.js';`)
+    .join('\n');
+
+  const nestExports = nestPlatforms
+    .map(([name]) => `export { Nest${toPascalCase(name)}EnvService } from './nest.js';`)
+    .join('\n');
+
+  return `// Динамический экспорт всех сгенерированных утилит
+
+// Next.js утилиты
+${nextExports}
+
+// Nest.js сервисы окружения
+${nestExports}
+`;
+}
+
 // Функция для преобразования имен с дефисами в PascalCase
 function toPascalCase(name: string) {
   return name
@@ -251,21 +275,24 @@ function toPascalCase(name: string) {
 
 try {
   const config = loadConfig();
-  const utilsDir = join(__dirname, '../utils');
-  ensureDirectoryExists(utilsDir);
+  const rootDir = resolve(__dirname, './src');
+  const generateDir = resolve(rootDir, 'generate');
+  ensureDirectoryExists(generateDir);
 
-  // Генерируем утилиты для Next.js
-  const nextContent = generateNextUtils(config.platforms);
-  writeFileSync(join(utilsDir, 'next.ts'), nextContent);
-  console.log('✨ Generated utils/next.ts');
+  // Генерация Next.js утилит
+  const nextUtils = generateNextUtils(config.platforms);
+  writeFileSync(resolve(generateDir, 'next.ts'), nextUtils);
 
-  // Генерируем утилиты для Nest.js
-  const nestContent = generateNestUtils(config.platforms);
-  writeFileSync(join(utilsDir, 'nest.ts'), nestContent);
-  console.log('✨ Generated utils/nest.ts');
+  // Генерация Nest.js утилит
+  const nestUtils = generateNestUtils(config.platforms);
+  writeFileSync(resolve(generateDir, 'nest.ts'), nestUtils);
 
-  console.log('✨ All utils generated successfully!');
+  // Генерация index.ts
+  const indexContent = generateIndex(config.platforms);
+  writeFileSync(resolve(generateDir, 'index.ts'), indexContent);
+
+  console.log('✅ Утилиты успешно сгенерированы');
 } catch (error) {
-  console.error('❌ Error generating utils:', error);
+  console.error('❌ Ошибка при генерации утилит:', error);
   process.exit(1);
 }

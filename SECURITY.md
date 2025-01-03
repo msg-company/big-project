@@ -6,9 +6,9 @@ We release patches for security vulnerabilities. Which versions are eligible for
 receiving such patches depends on the CVSS v3.0 Rating:
 
 | CVSS v3.0 | Supported Versions                        |
-| --------- | ---------------------------------------- |
+| --------- | ----------------------------------------- |
 | 9.0-10.0  | Releases within the previous three months |
-| 4.0-8.9   | Most recent release                      |
+| 4.0-8.9   | Most recent release                       |
 
 ## Reporting a Vulnerability
 
@@ -24,16 +24,19 @@ information or guidance.
 ## Security Measures
 
 1. **Environment Variables**
+
    - All sensitive configuration is managed through environment variables
    - Environment variables are validated at runtime
    - Templates do not contain real secrets
 
 2. **Dependencies**
+
    - Regular security audits with `npm audit`
    - Automated dependency updates with Dependabot
    - Lock files are committed to repository
 
 3. **Code Security**
+
    - TypeScript for type safety
    - ESLint security plugins
    - Automated testing

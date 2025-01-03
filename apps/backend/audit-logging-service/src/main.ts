@@ -1,43 +1,50 @@
+// Инициализируем трейсинг до создания приложения
+import { initializeTracing } from "@repo/service-telemetry";
+import { AppModule } from "./app/app.module";
 import { Logger } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { MicroserviceOptions, Transport } from "@nestjs/microservices";
-import { NestAuditLoggingServiceEnvService } from "@repo/env-config";
-import { AppModule } from "./app/app.module";
 
-// Отключаем предупреждение о партиционере
-process.env.KAFKAJS_NO_PARTITIONER_WARNING = "1";
+initializeTracing({
+  serviceName: "audit-logging-service",
+  environment: process.env.NODE_ENV || "development",
+  jaegerEndpoint: "http://localhost:4318/v1/traces",
+});
 
 async function bootstrap() {
-  try {
-    const app = await NestFactory.create(AppModule);
-    const envService = app.get(NestAuditLoggingServiceEnvService);
-    const port = envService.get("PORT");
-    const kafkaPort = envService.get("KAFKA_PORT");
-    const kafkaClientId = envService.get("KAFKA_CLIENT_ID");
-    const kafkaGroupId = envService.get("KAFKA_GROUP_ID");
+  const app = await NestFactory.create(AppModule);
 
-    app.connectMicroservice<MicroserviceOptions>({
+  // Настраиваем Kafka consumer
+  app.connectMicroservice<MicroserviceOptions>(
+    {
       transport: Transport.KAFKA,
       options: {
         client: {
-          brokers: [`localhost:${kafkaPort}`],
-          clientId: kafkaClientId,
+          clientId: process.env.KAFKA_CLIENT_ID || "audit-logging-service",
+          brokers: [`localhost:${process.env.KAFKA_PORT || 9092}`],
         },
         consumer: {
-          groupId: kafkaGroupId,
+          groupId: "audit-logging-consumer-server",
         },
       },
-    });
+    },
+    { inheritAppConfig: true },
+  );
 
-    await app.startAllMicroservices();
-    Logger.log(`🚀 Microservices started (Kafka consumer ready)`);
+  // Включаем CORS
+  app.enableCors({
+    origin: "http://localhost:4200",
+    credentials: true,
+  });
 
-    await app.listen(port);
-    Logger.log(`🚀 HTTP server is running on: http://localhost:${port}`);
-  } catch (error) {
-    Logger.error(`Error starting the application:`, error);
-    process.exit(1);
-  }
+  // Запускаем микросервисы
+  await app.startAllMicroservices();
+  Logger.log("🚀 Microservices started (Kafka consumer ready)");
+
+  // Запускаем HTTP сервер
+  const port = process.env.PORT || 4201;
+  await app.listen(port);
+  Logger.log(`🚀 HTTP server is running on: http://localhost:${port}`);
 }
 
 bootstrap();

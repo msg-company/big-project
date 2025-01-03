@@ -4,6 +4,9 @@
   "type": "module",
   "private": true,
   "exports": {
+    "./nest": "./nest.config.mjs",
+    "./next": "./next.config.mjs",
+    "./library": "./library.config.mjs",
     "./nest.config.mjs": "./nest.config.mjs",
     "./next.config.mjs": "./next.config.mjs",
     "./library.config.mjs": "./library.config.mjs"

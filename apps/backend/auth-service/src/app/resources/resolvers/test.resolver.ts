@@ -7,10 +7,11 @@ export class TestResolver {
 
   @Query(() => String)
   async test(): Promise<string> {
-    this.logger.info("Test query executed", {
+    this.logger.info("Test query executed!", {
       timestamp: new Date().toISOString(),
-      additionalInfo: "This is a test log",
+      additionalInfo: "This is a test log!!!!!!",
     });
+
     return "Hello from auth-service!";
   }
 }

@@ -1,12 +1,18 @@
+import { initializeTracing } from "@repo/service-telemetry";
+
+initializeTracing({
+  serviceName: "auth-service",
+  environment: process.env.NODE_ENV || "development",
+  jaegerEndpoint: "http://localhost:4318/v1/traces",
+});
+
 import { Logger } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { NestAuthServiceEnvService } from "@repo/env-config";
 import { AppModule } from "./app/app.module";
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    logger: ["error", "warn", "debug", "log", "verbose"],
-  });
+  const app = await NestFactory.create(AppModule);
   const envService = app.get(NestAuthServiceEnvService);
   const port = envService.get("PORT");
 

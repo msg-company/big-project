@@ -1,6 +1,7 @@
-import Transport from "winston-transport";
 import { Kafka, Producer } from "kafkajs";
 import { LogEntry } from "winston";
+import Transport from "winston-transport";
+import { trace, SpanStatusCode, context } from "@opentelemetry/api";
 
 interface KafkaTransportOptions extends Transport.TransportStreamOptions {
   brokers: string[];
@@ -32,7 +33,6 @@ export class KafkaTransport extends Transport {
       this.connected = true;
     } catch (error) {
       console.error("Failed to connect to Kafka:", error);
-      // Попробуем переподключиться через 5 секунд
       setTimeout(() => this.connect(), 5000);
     }
   }
@@ -42,39 +42,61 @@ export class KafkaTransport extends Transport {
       this.emit("logged", info);
     });
 
-    const logData = {
-      timestamp: new Date().toISOString(),
-      level: info.level,
-      message: info.message,
-      ...info,
-    };
+    const currentSpan = trace.getSpan(context.active());
+    const spanContext = currentSpan?.spanContext();
+
+    // Создаем спан для отправки лога
+    const tracer = trace.getTracer("logger-service");
+    const span = tracer.startSpan("send-log-to-kafka", {
+      attributes: {
+        "messaging.system": "kafka",
+        "messaging.destination": this.topic,
+        "messaging.destination_kind": "topic",
+      },
+    });
 
     try {
-      if (!this.connected) {
-        throw new Error("Not connected to Kafka");
-      }
+      const logData = {
+        timestamp: new Date().toISOString(),
+        level: info.level,
+        message: info.message,
+        ...info,
+      };
 
-      await this.producer.send({
-        topic: this.topic,
-        messages: [
-          {
-            value: JSON.stringify(logData),
-            key: info.serviceId || "unknown",
-          },
-        ],
+      if (this.connected) {
+        await this.producer.send({
+          topic: this.topic,
+          messages: [
+            {
+              headers: spanContext
+                ? {
+                    "x-trace-id": spanContext.traceId,
+                    "x-span-id": spanContext.spanId,
+                    "x-trace-flags": spanContext.traceFlags.toString(),
+                  }
+                : {},
+              value: JSON.stringify(logData),
+            },
+          ],
+        });
+      }
+      span.setStatus({ code: SpanStatusCode.OK });
+    } catch (error: any) {
+      span.setStatus({
+        code: SpanStatusCode.ERROR,
+        message: error?.message || "Failed to send log to Kafka",
       });
-    } catch (error) {
-      console.error("Error sending log to Kafka:", error);
-      if (!this.connected) {
-        this.connect();
-      }
+      console.error("Failed to send log to Kafka:", error);
+    } finally {
+      span.end();
+      callback();
     }
-
-    callback();
   }
 
   async close() {
-    await this.producer.disconnect();
-    this.connected = false;
+    if (this.connected) {
+      await this.producer.disconnect();
+      this.connected = false;
+    }
   }
 }

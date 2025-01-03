@@ -1,6 +1,14 @@
+import { initializeTracing } from "@repo/service-telemetry";
+
+initializeTracing({
+  serviceName: "getaway-service",
+  environment: process.env.NODE_ENV || "development",
+  jaegerEndpoint: "http://localhost:4318/v1/traces",
+});
+
+import { AppModule } from "./app.module";
 import { NestFactory } from "@nestjs/core";
 import { NestGatewayEnvService } from "@repo/env-config";
-import { AppModule } from "./app.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

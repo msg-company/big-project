@@ -2,11 +2,11 @@ name: "CodeQL Advanced"
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
   schedule:
-    - cron: '32 19 * * 1'
+    - cron: "32 19 * * 1"
 
 # Минимальные необходимые разрешения
 permissions:
@@ -27,76 +27,76 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ['javascript']
+        language: ["javascript"]
         include:
           - language: javascript
             build-mode: none
 
     steps:
-    - name: Harden Runner
-      uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
-      with:
-        egress-policy: audit
+      - name: Harden Runner
+        uses: step-security/harden-runner@0080882f6c36860b6ba35c610c98ce87d4e2f26f # v2.10.2
+        with:
+          egress-policy: audit
 
-    - name: Checkout repository
-      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
-      with:
-        persist-credentials: false
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4
+        with:
+          persist-credentials: false
 
-    - name: Setup Node.js
-      uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4
-      with:
-        node-version: '18'
+      - name: Setup Node.js
+        uses: actions/setup-node@39370e3970a6d050c480ffad4ff0ed4d3fdee5af # v4
+        with:
+          node-version: "18"
 
-    - name: Install pnpm
-      uses: pnpm/action-setup@e9540b3eafaf84907c087a645d3258bfaa861427 # v3
-      with:
-        version: '9.14.4'
-        run_install: false
+      - name: Install pnpm
+        uses: pnpm/action-setup@e9540b3eafaf84907c087a645d3258bfaa861427 # v3
+        with:
+          version: "9.14.4"
+          run_install: false
 
-    - name: Get pnpm store directory
-      shell: bash
-      run: |
-        echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
 
-    - name: Setup pnpm cache
-      uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
-      with:
-        path: ${{ env.STORE_PATH }}
-        key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-        restore-keys: |
-          ${{ runner.os }}-pnpm-store-
+      - name: Setup pnpm cache
+        uses: actions/cache@1bd1e32a3bdc45362d1e726936510720a7c30a57 # v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
-    - name: Install dependencies
-      run: pnpm install --frozen-lockfile
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
 
-    - name: Initialize CodeQL
-      uses: github/codeql-action/init@1a7989f3955e0c69f0e0ccc14aee54a387a0fd31 # v3
-      with:
-        languages: ${{ matrix.language }}
-        config-file: .github/codeql/codeql-config.yml
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@1a7989f3955e0c69f0e0ccc14aee54a387a0fd31 # v3
+        with:
+          languages: ${{ matrix.language }}
+          config-file: .github/codeql/codeql-config.yml
 
-    # Создаем конфигурационный файл для более точного анализа
-    - name: Create CodeQL config
-      run: |
-        mkdir -p .github/codeql
-        cat > .github/codeql/codeql-config.yml << 'EOF'
-        name: "Custom CodeQL config"
-        queries:
-          - uses: security-extended
-          - uses: security-and-quality
-        paths-ignore:
-          - '**/node_modules/**'
-          - '**/dist/**'
-          - '**/.next/**'
-          - '**/build/**'
-          - '**/*.test.ts'
-          - '**/*.test.tsx'
-          - '**/*.spec.ts'
-          - '**/*.spec.tsx'
-        EOF
+      # Создаем конфигурационный файл для более точного анализа
+      - name: Create CodeQL config
+        run: |
+          mkdir -p .github/codeql
+          cat > .github/codeql/codeql-config.yml << 'EOF'
+          name: "Custom CodeQL config"
+          queries:
+            - uses: security-extended
+            - uses: security-and-quality
+          paths-ignore:
+            - '**/node_modules/**'
+            - '**/dist/**'
+            - '**/.next/**'
+            - '**/build/**'
+            - '**/*.test.ts'
+            - '**/*.test.tsx'
+            - '**/*.spec.ts'
+            - '**/*.spec.tsx'
+          EOF
 
-    - name: Perform CodeQL Analysis
-      uses: github/codeql-action/analyze@86b04fb0e47484f7282357688f21d5d0e32175fe # v3
-      with:
-        category: "/language:${{matrix.language}}"
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@86b04fb0e47484f7282357688f21d5d0e32175fe # v3
+        with:
+          category: "/language:${{matrix.language}}"

@@ -1,11 +1,9 @@
 import { mkdirSync, writeFileSync } from 'fs';
-import { dirname, join } from 'path';
-import { fileURLToPath } from 'url';
+import { dirname, join, resolve } from 'path';
 
 import { envConfig } from '../env-config';
 
-// Получаем эквивалент __dirname для ES-модулей
-const __filename = fileURLToPath(import.meta.url);
+const __filename = resolve('generate-env.ts');
 const __dirname = dirname(__filename);
 
 // Типы для конфигурации
